@@ -1,0 +1,12 @@
+loki.source.kafka "rf" {
+  brokers    = ["redpanda:9092"]
+  topics     = ["rf-events"]
+  group_id   = "tpol-v4-loki"
+  labels     = {job = "rf-events", training = "true"}
+  forward_to = [loki.write.lab.receiver]
+}
+loki.write "lab" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

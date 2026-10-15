@@ -1,0 +1,26 @@
+services:
+  stream-alloy:
+    image: grafana/alloy:v1.20.1
+    mem_limit: 256m
+    restart: 'no'
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: '2'
+    volumes:
+    - ./stream.alloy:/etc/alloy/config.alloy:ro
+    - stream-alloy:/var/lib/alloy
+    command:
+    - run
+    - --storage.path=/var/lib/alloy
+    - /etc/alloy/config.alloy
+    networks:
+    - default
+    - redpanda
+networks:
+  redpanda:
+    external: true
+    name: tpol-redpanda_default
+volumes:
+  stream-alloy: {}

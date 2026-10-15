@@ -1,0 +1,42 @@
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.kubeconfig
+kubeconfig
+.kube/
+*.tfstate
+*.tfstate.*
+
+# Local lab data
+logs/
+*.log
+backups/
+local/data/
+data/
+
+# Windows and editor files
+Thumbs.db
+Desktop.ini
+.vscode/
+
+# Container images and large deployment archives
+*.tar
+*.tar.zst
+
+# Git installer shortcuts accidentally inside lab
+Git/
+
+# Local machine configuration
+windows/launcher-settings.json

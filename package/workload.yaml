@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tpol-training
+  labels:
+    training.tpol.dev/owner: tpol-lab-v2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mission-api
+  namespace: tpol-training
+  labels:
+    training.tpol.dev/owner: tpol-lab-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mission-api
+  template:
+    metadata:
+      labels:
+        app: mission-api
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mission-api
+          image: ghcr.io/stefanprodan/podinfo:6.10.1
+          ports:
+            - name: http
+              containerPort: 9898
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mission-api
+  namespace: tpol-training
+  labels:
+    training.tpol.dev/owner: tpol-lab-v2
+spec:
+  selector:
+    app: mission-api
+  ports:
+    - name: http
+      port: 9898
+      targetPort: http

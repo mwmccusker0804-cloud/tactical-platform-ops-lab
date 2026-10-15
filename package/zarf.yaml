@@ -1,0 +1,16 @@
+kind: ZarfPackageConfig
+metadata:
+  name: tpol-training
+  version: 2.0.0
+  description: Independent local UDS operations training workload
+components:
+  - name: training
+    required: true
+    manifests:
+      - name: training-workload
+        namespace: tpol-training
+        files:
+          - workload.yaml
+          - uds-package.yaml
+    images:
+      - ghcr.io/stefanprodan/podinfo:6.10.1

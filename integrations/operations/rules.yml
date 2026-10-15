@@ -1,0 +1,21 @@
+groups:
+  - name: tpol-training
+    rules:
+      - alert: TrainingDemoUnavailable
+        expr: probe_success{job="demo-probe"} == 0
+        for: 30s
+        labels:
+          severity: warning
+          training: "true"
+        annotations:
+          summary: Training demo HTTP check failed
+          description: Restore the demo container, then verify probe_success returns to 1.
+      - alert: TrainingProbeCollectionMissing
+        expr: up{job="demo-probe"} == 0 or absent(up{job="demo-probe"})
+        for: 30s
+        labels:
+          severity: warning
+          training: "true"
+        annotations:
+          summary: Probe collection unavailable
+          description: Inspect blackbox and Prometheus; missing evidence is not a healthy service.

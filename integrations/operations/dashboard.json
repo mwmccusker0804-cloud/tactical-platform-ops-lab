@@ -1,0 +1,118 @@
+{
+  "uid": "tpol-operations-v4",
+  "title": "TPOL v4 \u00b7 operations exercise",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "HTTP check succeeds (1=yes)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "tpol-ops-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "probe_success{job=\"demo-probe\"}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Probe response time (seconds)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "tpol-ops-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "probe_duration_seconds{job=\"demo-probe\"}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Metrics collector reaches demo",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "tpol-ops-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "up{job=\"demo-metrics\"}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Training requests per second",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "tpol-ops-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(tpol_demo_requests_total[1m])"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Collected training logs",
+      "type": "logs",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 24,
+        "h": 9
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "tpol-ops-loki"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"tpol-operations\"}"
+        }
+      ]
+    }
+  ]
+}

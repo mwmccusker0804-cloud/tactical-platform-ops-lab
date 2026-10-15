@@ -1,0 +1,21 @@
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: tpol-training
+  namespace: tpol-training
+spec:
+  network:
+    expose:
+      - service: mission-api
+        selector:
+          app: mission-api
+        gateway: tenant
+        host: tpol-training
+        port: 9898
+  monitor:
+    - selector:
+        app: mission-api
+      targetPort: 9898
+      portName: http
+      description: Training application metrics
+      kind: PodMonitor

@@ -1,0 +1,11 @@
+# OPTIONAL FRAGMENT ONLY. Merge beneath spec in uds-package.yaml; do not apply this file directly.
+sso:
+  - name: Training app sign-in
+    clientId: tpol-training
+    redirectUris:
+      - https://tpol-training.uds.dev/login
+    enableAuthserviceSelector:
+      app: mission-api
+    groups:
+      anyOf:
+        - /UDS Core/Admin
